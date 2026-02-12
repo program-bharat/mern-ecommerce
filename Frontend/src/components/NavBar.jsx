@@ -36,7 +36,7 @@ const NavBar = () => {
                         </IconWrapper>
                         {isProfileOpen && (
                             <ProfileDropdown>
-                                <DropdownItem><Link to={"/profile"} style={{ textDecoration: "none", color: "black" }}>Profile</Link></DropdownItem>
+                                <Link to={"/profile"} style={{ textDecoration: "none", color: "black" }}><DropdownItem>Profile</DropdownItem></Link>
                                 <DropdownItem>Logout</DropdownItem>
                             </ProfileDropdown>
                         )}
@@ -68,12 +68,17 @@ export default NavBar;
 const Nav = styled.nav`
     width: 100%;
     height: 70px;
-    background-color: #f5f5f5;
+    background-color: #f3f7fa;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
     box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    /* left: 0; */
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const LeftSection = styled.div`

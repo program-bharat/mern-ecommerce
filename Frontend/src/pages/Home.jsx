@@ -4,6 +4,7 @@ const images = [
     "/Slides/slide1.webp",
     "/Slides/slide2.webp",
     "/Slides/slide3.webp",
+    "/Slides/slide4.webp",
 ];
 const Home = () => {
     return (

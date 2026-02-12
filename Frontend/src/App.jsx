@@ -5,6 +5,7 @@ import styled from "styled-components";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import Register from "./pages/Register";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </Main>
 
@@ -34,4 +36,5 @@ const Container = styled.div`
 
 const Main = styled.main`
   flex: 1;
+  margin-top: 70px;
 `;

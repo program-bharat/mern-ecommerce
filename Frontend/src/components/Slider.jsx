@@ -31,7 +31,7 @@ export default Slider
 
 const SliderWrapper = styled.div`
   width: 100%;
-  height: 90vh;
+  height: 91vh;
   overflow: hidden;
 `;
 

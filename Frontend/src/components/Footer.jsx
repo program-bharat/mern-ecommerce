@@ -7,8 +7,8 @@ const Footer = () => {
                 <TopSection>
                     <BrandSection>
                         <Logo>BHaRaT</Logo>
-                        <Desctiption>Elevate your everyday style with premium quality fashion.
-                            Designed for comfort. Built for confidence.</Desctiption>
+                        <Description>Elevate your everyday style with premium quality fashion.
+                            Designed for comfort. Built for confidence.</Description>
                         <SocialIcons>
                             <Icon><FaInstagram /></Icon>
                             <Icon><FaFacebookF /></Icon>
@@ -75,7 +75,7 @@ const Logo = styled.h2`
     letter-spacing: 4px;
     margin-bottom: 20px;
 `;
-const Desctiption = styled.div`
+const Description = styled.div`
     font-size: 14px;
     color: #ccc;
     line-height: 1.6;

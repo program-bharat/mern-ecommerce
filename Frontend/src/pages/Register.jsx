@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 const Register = () => {
@@ -7,9 +7,11 @@ const Register = () => {
         name: '',
         email: '',
         password: '',
+        role: 'buyer'
     });
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
+    const navigate = useNavigate();
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -37,6 +39,11 @@ const Register = () => {
             setMessage("Password must be at least 6 characters");
             return;
         }
+        if (!formData.role) {
+            setIsError(true);
+            setMessage("Please select a role");
+            return;
+        }
         // API Call
         try {
             const res = await axios.post("http://localhost:5000/api/auth/register", formData);
@@ -49,6 +56,7 @@ const Register = () => {
                 name: "",
                 email: "",
                 password: "",
+                role: "buyer"
             });
         } catch (error) {
             setIsError(true);

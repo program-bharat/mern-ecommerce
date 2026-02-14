@@ -42,7 +42,12 @@ const Login = () => {
             setIsError(false);
             setMessage(res.data.message);
             setTimeout(() => {
-                navigate("/");
+                const user = res.data.user;
+                if (user.role === "seller") {
+                    navigate("/seller/dashboard");
+                } else {
+                    navigate("/");
+                }
             }, 1000);
 
             setFormData({

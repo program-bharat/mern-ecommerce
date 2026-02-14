@@ -17,7 +17,7 @@ const Slider = ({ images }) => {
                     {images.map((_, i) => (
                         <Dot
                             key={i}
-                            active={i === index}
+                            $active={i === index}
                             onClick={() => setIndex(i)}
                         />
                     ))}

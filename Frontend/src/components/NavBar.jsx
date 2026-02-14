@@ -1,11 +1,15 @@
 import styled from "styled-components"
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { FiMenu, FiSearch, FiUser, FiHeart, FiX } from "react-icons/fi";
 const NavBar = () => {
+    const navigate = useNavigate();
+    const [user, setUser] = useState(null);
     const [searchValue, setSearchValue] = useState("");
     const [isOpen, setIsOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const location = useLocation();
+    const profileRef = useRef(null);
     const handleSearchChange = (e) => {
         setSearchValue(e.target.value);
     };
@@ -15,6 +19,44 @@ const NavBar = () => {
     const toggleProfile = () => {
         setIsProfileOpen(!isProfileOpen);
     };
+    useEffect(() => {
+        setIsProfileOpen(false);
+    }, [location.pathname]);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (profileRef.current && !profileRef.current.contains(event.target)) {
+                setIsProfileOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // Profile data
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null);
+        }
+    }, [location]);
+    // Edit Profile
+    const handleEditProfile = () => {
+        setIsProfileOpen(false);
+        navigate("/edit-profile");
+    };
+    // Logout function
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setUser(null);
+        setIsProfileOpen(false);
+    };
+
     return (
         <>
             <Nav>
@@ -30,14 +72,43 @@ const NavBar = () => {
                             onChange={handleSearchChange}
                         />
                     </SearchContainer>
-                    <ProfileWrapper>
+                    <ProfileWrapper ref={profileRef}>
                         <IconWrapper onClick={toggleProfile}>
                             <FiUser size={22} />
                         </IconWrapper>
                         {isProfileOpen && (
                             <ProfileDropdown>
-                                <Link to={"/profile"} style={{ textDecoration: "none", color: "black" }}><DropdownItem>Profile</DropdownItem></Link>
-                                <DropdownItem>Logout</DropdownItem>
+                                {user ? (
+                                    <>
+                                        <DropdownItem style={{ fontWeight: "600", cursor: "default" }}>
+                                            Hi, {user.name}
+                                        </DropdownItem>
+
+                                        <DropdownItem onClick={handleEditProfile}>
+                                            Edit Profile
+                                        </DropdownItem>
+
+                                        <DropdownItem onClick={handleLogout}>
+                                            Logout
+                                        </DropdownItem>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to="/login"
+                                            style={{ textDecoration: "none", color: "black" }}
+                                        >
+                                            <DropdownItem>Login</DropdownItem>
+                                        </Link>
+
+                                        <Link
+                                            to="/register"
+                                            style={{ textDecoration: "none", color: "black" }}
+                                        >
+                                            <DropdownItem>Register</DropdownItem>
+                                        </Link>
+                                    </>
+                                )}
                             </ProfileDropdown>
                         )}
                     </ProfileWrapper>

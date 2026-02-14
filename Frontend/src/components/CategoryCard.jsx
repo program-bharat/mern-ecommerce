@@ -1,15 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 const CategoryCard = ({ image, title }) => {
-    return (
-        <>
-            <CategoryCards>
-                <Image src={image} alt={title} />
-                <Overlay>
-                    <Title>{title}</Title>
-                </Overlay>
-            </CategoryCards>
-        </>
-    )
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/category/${title.toLowerCase()}`);
+  }
+  return (
+    <>
+      <CategoryCards onClick={handleClick}>
+        <Image src={image} alt={title} />
+        <Overlay>
+          <Title>{title}</Title>
+        </Overlay>
+      </CategoryCards>
+    </>
+  )
 }
 
 export default CategoryCard;

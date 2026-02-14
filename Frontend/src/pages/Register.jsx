@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 const Register = () => {
@@ -41,6 +42,9 @@ const Register = () => {
             const res = await axios.post("http://localhost:5000/api/auth/register", formData);
             setIsError(false);
             setMessage(res.data.message);
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
             setFormData({
                 name: "",
                 email: "",
@@ -103,9 +107,41 @@ const Register = () => {
                             />
                         </FormGroup>
 
+                        <FormGroup>
+                            <Label>Register As</Label>
+
+                            <RadioGroup>
+                                <RadioLabel>
+                                    <input
+                                        type="radio"
+                                        name="role"
+                                        value="buyer"
+                                        checked={formData.role === "buyer"}
+                                        onChange={handleChange}
+                                    />
+                                    Buyer
+                                </RadioLabel>
+
+                                <RadioLabel>
+                                    <input
+                                        type="radio"
+                                        name="role"
+                                        value="seller"
+                                        checked={formData.role === "seller"}
+                                        onChange={handleChange}
+                                    />
+                                    Seller
+                                </RadioLabel>
+                            </RadioGroup>
+                        </FormGroup>
+
                         <Button type="submit">Register</Button>
                     </Form>
                     {message && <Message error={isError}>{message}</Message>}
+                    <LoginText>
+                        Already have an account?{" "}
+                        <StyledLink to="/login">Login</StyledLink>
+                    </LoginText>
                 </FormCard>
             </Wrapper>
         </>
@@ -168,6 +204,21 @@ const Input = styled.input`
   }
 `;
 
+const RadioGroup = styled.div`
+  display: flex;
+  gap: 20px;
+  margin-top: 5px;
+`;
+
+const RadioLabel = styled.label`
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+`;
+
+
 const Button = styled.button`
   padding: 10px;
   margin-top: 10px;
@@ -189,9 +240,27 @@ const Button = styled.button`
 `;
 
 const Message = styled.p`
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14px;
-  color: ${(props) => (props.error ? "red" : "green")};
-  transition: opacity 0.3s ease;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: ${(props) => (props.error ? "red" : "green")};
+    transition: opacity 0.3s ease;
+`;
+
+const LoginText = styled.p`
+    margin-top: 14px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+`;
+
+const StyledLink = styled(Link)`
+    color: #111;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.25s ease;
+    &:hover {
+      color: #333;
+      text-decoration: underline;
+    }
 `;

@@ -6,6 +6,9 @@ import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
+import WishList from "./pages/WishList";
+import CategoryPage from "./pages/CategoryPage";
 
 const App = () => {
   return (
@@ -17,6 +20,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/wishlist" element={<WishList />} />
+            <Route path="/category/:title" element={<CategoryPage />} />
           </Routes>
         </Main>
 

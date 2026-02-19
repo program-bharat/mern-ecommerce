@@ -55,7 +55,7 @@ const Dot = styled.div`
   height: 10px;
   border-radius: 50%;
   background-color: ${(props) =>
-        props.active ? "white" : "rgba(255,255,255,0.5)"};
+        props.$active ? "white" : "rgba(255,255,255,0.5)"};
   cursor: pointer;
   transition: 0.5s;
 `;

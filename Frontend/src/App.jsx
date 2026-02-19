@@ -10,6 +10,11 @@ import Login from "./pages/Login";
 import WishList from "./pages/WishList";
 import CategoryPage from "./pages/CategoryPage";
 
+// Seller Pages
+import SellerDashboard from "./pages/seller/SellerDashboard";
+import AddProduct from "./pages/seller/AddProduct";
+import ViewProducts from "./pages/seller/ViewProducts"
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -23,6 +28,11 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/wishlist" element={<WishList />} />
             <Route path="/category/:title" element={<CategoryPage />} />
+
+            {/* Seller Routes */}
+            <Route path="/seller/dashboard" element={<SellerDashboard />} />
+            <Route path="/seller/addproducts" element={<AddProduct />} />
+            <Route path="/seller/products" element={<ViewProducts />} />
           </Routes>
         </Main>
 

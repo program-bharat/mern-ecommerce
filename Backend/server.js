@@ -14,6 +14,13 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 
+// serve uploaded images
+app.use("/uploads", express.static("uploads"));
+// product routes
+const productRoutes = require("./routes/productRoutes");
+app.use("/api/products", productRoutes);
+
+
 app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`);
 })

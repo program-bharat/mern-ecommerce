@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaUpload } from "react-icons/fa";
 
@@ -36,10 +37,25 @@ const AddProduct = () => {
 
         try {
             setLoading(true);
-            // later connect to backend
-            console.log("Product Data:", form);
-            alert("Product added successfully ✅");
-            navigate("/seller/products");
+            const token = localStorage.getItem("token");
+            const formData = new FormData();
+            formData.append("name", form.name);
+            formData.append("description", form.description);
+            formData.append("price", form.price);
+            formData.append("category", form.category);
+            formData.append("stock", form.stock);
+            formData.append("image", form.image);
+            await axios.post(
+                "http://localhost:5000/api/products/add",
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            navigate("/seller/products")
         } catch (err) {
             console.error(err);
         } finally {

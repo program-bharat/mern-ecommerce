@@ -1,90 +1,87 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
 const ViewProducts = () => {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    // Dummy fetch (later from API)
-    useEffect(() => {
-        setTimeout(() => {
-            setProducts([
-                {
-                    _id: "1",
-                    name: "Wireless Mouse",
-                    price: 799,
-                    stock: 25,
-                    image:
-                        "https://images.pexels.com/photos/18186107/pexels-photo-18186107.jpeg",
-                },
-                {
-                    _id: "2",
-                    name: "Gaming Keyboard",
-                    price: 2499,
-                    stock: 10,
-                    image:
-                        "https://images.pexels.com/photos/18186107/pexels-photo-18186107.jpeg",
-                },
-            ]);
-            setLoading(false);
-        }, 800);
-    }, []);
+  // Fetch data from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const { data } = await axios.get(
+          "http://localhost:5000/api/products/my-products",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    // Delete handler
-    const handleDelete = (id) => {
-        const confirmDelete = window.confirm("Delete this product?");
-        if (!confirmDelete) return;
-
-        setProducts((prev) => prev.filter((p) => p._id !== id));
+        setProducts(data);
+      } catch (error) {
+        console.error("Fetch products error:", error.response?.data || error.message);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (loading) return <Message>Loading products...</Message>;
+    fetchProducts();
+  }, []);
 
-    if (!products.length)
-        return <Message>No products added yet.</Message>;
+  // Delete handler
+  const handleDelete = (id) => {
+    const confirmDelete = window.confirm("Delete this product?");
+    if (!confirmDelete) return;
+    setProducts((prev) => prev.filter((p) => p._id !== id));
+  };
+  if (loading) return <Message>Loading products...</Message>;
+  if (!products.length) return <Message>No products added yet.</Message>;
 
-    return (
-        <Wrapper>
-            <HeaderRow>
-                <Title>Your Products</Title>
-                <Count>{products.length} items</Count>
-            </HeaderRow>
+  return (
+    <Wrapper>
+      <HeaderRow>
+        <Title>Your Products</Title>
+        <Count>{products.length} items</Count>
+      </HeaderRow>
 
-            <Grid>
-                {products.map((product) => (
-                    <Card key={product._id}>
-                        <ImageWrapper>
-                            <Image src={product.image} alt={product.name} />
-                            <StockBadge $inStock={product.stock > 0}>
-                                {product.stock > 0 ? "In Stock" : "Out of Stock"}
-                            </StockBadge>
-                        </ImageWrapper>
+      <Grid>
+        {products.map((product) => (
+          <Card key={product._id}>
+            <ImageWrapper>
+              <Image src={`http://localhost:5000${product.image}`} alt={product.name} />
+              <StockBadge $inStock={product.stock > 0}>
+                {product.stock > 0 ? "In Stock" : "Out of Stock"}
+              </StockBadge>
+            </ImageWrapper>
 
-                        <CardBody>
-                            <Name title={product.name}>{product.name}</Name>
+            <CardBody>
+              <Name title={product.name}>{product.name}</Name>
 
-                            <PriceRow>
-                                <Price>₹{product.price}</Price>
-                                <StockText>{product.stock} left</StockText>
-                            </PriceRow>
+              <PriceRow>
+                <Price>₹{product.price}</Price>
+                <StockText>{product.stock} left</StockText>
+              </PriceRow>
 
-                            <Actions>
-                                <EditBtn>
-                                    <FaEdit />
-                                    Edit
-                                </EditBtn>
+              <Actions>
+                <EditBtn>
+                  <FaEdit />
+                  Edit
+                </EditBtn>
 
-                                <DeleteBtn onClick={() => handleDelete(product._id)}>
-                                    <FaTrash />
-                                </DeleteBtn>
-                            </Actions>
-                        </CardBody>
-                    </Card>
-                ))}
-            </Grid>
-        </Wrapper>
-    );
+                <DeleteBtn onClick={() => handleDelete(product._id)}>
+                  <FaTrash />
+                </DeleteBtn>
+              </Actions>
+            </CardBody>
+          </Card>
+        ))}
+      </Grid>
+    </Wrapper>
+  );
 };
 
 export default ViewProducts;
@@ -155,7 +152,7 @@ const StockBadge = styled.span`
   position: absolute;
   top: 12px;
   left: 12px;
-  background: ${(p) => (p.inStock ? "#2e7d32" : "#c62828")};
+  background: ${(p) => (p.$inStock ? "#2e7d32" : "#c62828")};
   color: white;
   padding: 4px 10px;
   font-size: 12px;

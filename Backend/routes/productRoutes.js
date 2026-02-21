@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addProducts, getSellerProducts, deleteProduct } = require("../controller/productController")
+const { addProducts, getSellerProducts, deleteProduct, getProductsByCategory } = require("../controller/productController")
 // middlewares
 const { protect, sellerOnly } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
@@ -19,6 +19,8 @@ router.get("/my-products",
     sellerOnly,
     getSellerProducts,
 );
+
+router.get("/category/:category", getProductsByCategory);
 
 
 module.exports = router;

@@ -6,7 +6,18 @@ import { FaUpload } from "react-icons/fa";
 
 const AddProduct = () => {
     const navigate = useNavigate();
-
+    const categories = [
+        "jackets",
+        "trousers",
+        "shirts",
+        "jeans",
+        "polos",
+        "cargos",
+        "overshirts",
+        "shoes",
+        "sunglasses",
+        "bags",
+    ];
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -101,12 +112,15 @@ const AddProduct = () => {
                         />
                     </Row>
 
-                    <Input
-                        name="category"
-                        placeholder="Category"
-                        onChange={handleChange}
-                        required
-                    />
+                    <Select name="category" onChange={handleChange} required>
+                        <option value="">Select Category</option>
+
+                        {categories.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
+                    </Select>
 
                     {/* Image Upload */}
                     <UploadBox>
@@ -164,6 +178,12 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+`;
+
+const Select = styled.select`
   padding: 12px;
   border-radius: 8px;
   border: 1px solid #ddd;

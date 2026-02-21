@@ -43,3 +43,16 @@ exports.getSellerProducts = async (req, res, next) => {
 
 //     }
 // };
+
+// Category wise Filter
+exports.getProductsByCategory = async (req, res) => {
+    try {
+        const { category } = req.params;
+        const products = await Product.find({
+            category: new RegExp(`^${category}$`, "i"),
+        }).sort({ createdAt: -1 });
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
+    }
+}

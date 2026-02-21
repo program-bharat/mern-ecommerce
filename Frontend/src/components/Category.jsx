@@ -11,6 +11,7 @@ const categories = [
     { title: "SHOES", image: "/Category/Shoes.webp" },
     { title: "OVERSHIRTS", image: "/Category/OverShirts.webp" },
     { title: "SUNGLASSES", image: "/Category/SunGlasses.webp" },
+    { title: "BAGS", image: "/Category/Bags.webp" },
 ];
 
 const Categories = () => {

@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
 const CategoryPage = () => {
+    const navigate = useNavigate();
     const { category } = useParams();
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -131,7 +133,10 @@ const CategoryPage = () => {
                 <ProductSection>
                     <ProductGrid>
                         {products.map((product) => (
-                            <Card key={product._id}>
+                            <Card
+                                key={product._id}
+                                onClick={() => navigate(`/product/${product._id}`)}
+                            >
                                 <ImageContainer>
                                     <Image
                                         src={`http://localhost:5000${product.image}`}

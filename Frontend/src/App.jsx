@@ -9,6 +9,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import WishList from "./pages/WishList";
 import CategoryPage from "./pages/CategoryPage";
+import ProductPage from "./pages/ProductPage"
 
 // Seller Pages
 import SellerDashboard from "./pages/seller/SellerDashboard";
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/wishlist" element={<WishList />} />
             <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/product/:id" element={<ProductPage />} />
 
             {/* Seller Routes */}
             <Route path="/seller/dashboard" element={<SellerDashboard />} />

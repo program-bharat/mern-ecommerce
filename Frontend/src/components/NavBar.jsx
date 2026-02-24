@@ -112,7 +112,7 @@ const NavBar = () => {
                             </ProfileDropdown>
                         )}
                     </ProfileWrapper>
-                    <IconWrapper>
+                    <IconWrapper onClick={() => navigate("/wishlist")}>
                         <FiHeart size={22} />
                     </IconWrapper>
                 </RightSection>

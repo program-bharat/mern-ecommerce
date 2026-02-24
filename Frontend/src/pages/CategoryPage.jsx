@@ -1,3 +1,5 @@
+import { FaHeart } from "react-icons/fa";
+import { toggleWishlist, isInWishlist } from "../utils/wishlist";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -132,28 +134,41 @@ const CategoryPage = () => {
                 {/* Product Grid */}
                 <ProductSection>
                     <ProductGrid>
-                        {products.map((product) => (
-                            <Card
-                                key={product._id}
-                                onClick={() => navigate(`/product/${product._id}`)}
-                            >
-                                <ImageContainer>
-                                    <Image
-                                        src={`http://localhost:5000${product.image}`}
-                                        alt={product.name}
-                                    />
-                                </ImageContainer>
-                                <ProductInfo>
-                                    <ProductName>{product.name}</ProductName>
-                                    <ProductPrice>
-                                        ₹{product.price}
-                                        {product.originalPrice && (
-                                            <OriginalPrice>₹{product.originalPrice}</OriginalPrice>
-                                        )}
-                                    </ProductPrice>
-                                </ProductInfo>
-                            </Card>
-                        ))}
+                        {products.map((product) => {
+                            const liked = isInWishlist(product._id);
+                            return (
+                                <Card
+                                    key={product._id}
+                                    onClick={() => navigate(`/product/${product._id}`)}
+                                >
+                                    {/* Wishlist Button */}
+                                    <WishlistBtn
+                                        className={liked ? "active" : ""}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleWishlist(product._id);
+                                            window.location.reload();
+                                        }}
+                                    >
+                                        <FaHeart />
+                                    </WishlistBtn>
+
+                                    <ImageContainer>
+                                        <Image
+                                            src={`http://localhost:5000${product.image}`}
+                                            alt={product.name}
+                                        />
+                                    </ImageContainer>
+
+                                    <ProductInfo>
+                                        <ProductName>{product.name}</ProductName>
+                                        <ProductPrice>
+                                            ₹{product.price}
+                                        </ProductPrice>
+                                    </ProductInfo>
+                                </Card>
+                            );
+                        })}
                     </ProductGrid>
                 </ProductSection>
             </Container>
@@ -338,6 +353,7 @@ const Card = styled.div`
     background: white;
     border: 1px solid #e0e0e0;
     cursor: pointer;
+    position: relative;
 `;
 
 const ImageContainer = styled.div`
@@ -383,4 +399,32 @@ const OriginalPrice = styled.span`
     color: #999;
     text-decoration: line-through;
     margin-left: 6px;
+`;
+
+const WishlistBtn = styled.div`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 34px;
+    width: 34px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    svg {
+        font-size: 14px;
+        color: #999;
+    }
+
+    &.active svg {
+        color: red;
+    }
+
+    &:hover svg {
+        transform: scale(1.1);
+    }
 `;

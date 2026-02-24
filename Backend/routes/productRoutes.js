@@ -1,6 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const { addProducts, getSellerProducts, deleteProduct, getProductsByCategory, getProductById } = require("../controller/productController")
+const {
+        addProducts,
+        getSellerProducts,
+        deleteProduct,
+        getProductsByCategory,
+        getProductById,
+        getWishlistProducts
+    } = require("../controller/productController")
+
 // middlewares
 const { protect, sellerOnly } = require("../middleware/authMiddleware");
 const upload = require("../middleware/uploadMiddleware");
@@ -22,6 +30,9 @@ router.get("/my-products",
 
 // Category Page
 router.get("/category/:category", getProductsByCategory);
+
+// Wishlist Page
+router.get("/wishlist", getWishlistProducts);
 
 // Product Page
 router.get("/:id", getProductById);

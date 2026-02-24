@@ -71,3 +71,17 @@ exports.getProductById = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
+
+exports.getWishlistProducts = async (req, res) => {
+    try {
+        const { ids } = req.query;
+        if (!ids) return res.json([]);
+        const idArray = ids.split(",");
+        const products = await Product.find({
+            _id: { $in: idArray },
+        });
+        res.status(200).json(products);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
+    }
+}

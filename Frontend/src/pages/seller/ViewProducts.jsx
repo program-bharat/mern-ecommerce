@@ -33,10 +33,29 @@ const ViewProducts = () => {
   }, []);
 
   // Delete handler
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const confirmDelete = window.confirm("Delete this product?");
     if (!confirmDelete) return;
-    setProducts((prev) => prev.filter((p) => p._id !== id));
+    try {
+      const token = localStorage.getItem("token");
+      // call backend delete API
+      await axios.delete(
+        `http://localhost:5000/api/products/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // remove from UI AFTER backend success
+      setProducts((prev) => prev.filter((p) => p._id !== id));
+    } catch (error) {
+      console.error(
+        "Delete error:",
+        error.response?.data || error.message
+      );
+      alert("Failed to delete product");
+    }
   };
   if (loading) return <Message>Loading products...</Message>;
   if (!products.length) return <Message>No products added yet.</Message>;

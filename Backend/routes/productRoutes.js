@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {
-        addProducts,
-        getSellerProducts,
-        deleteProduct,
-        getProductsByCategory,
-        getProductById,
-        getWishlistProducts
-    } = require("../controller/productController")
+    addProducts,
+    getSellerProducts,
+    deleteProduct,
+    getProductsByCategory,
+    getProductById,
+    getWishlistProducts,
+    getSellerStats,
+    getProfile
+} = require("../controller/productController")
 
 // middlewares
 const { protect, sellerOnly } = require("../middleware/authMiddleware");
@@ -21,12 +23,31 @@ router.post("/add",
     addProducts
 );
 
-// Seller gets their products
+// Seller delete product from ViewProduct Page
+router.delete(
+    "/:id",
+    protect,
+    sellerOnly,
+    deleteProduct
+);
+
+// Seller gets their products for ViewProduct Page
 router.get("/my-products",
     protect,
     sellerOnly,
     getSellerProducts,
 );
+
+// Seller data for dashboard stats
+router.get(
+    "/seller/stats",
+    protect,
+    sellerOnly,
+    getSellerStats
+);
+
+// Seller Profile Page 
+router.get("/profile", protect, getProfile);
 
 // Category Page
 router.get("/category/:category", getProductsByCategory);

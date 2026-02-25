@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaPlus, FaBoxOpen, FaClipboardList, FaUser } from "react-icons/fa";
+import axios from "axios";
 import styled from "styled-components";
 
 const SellerDashboard = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     // Profile data
     const [user, setUser] = useState("");
     useEffect(() => {
@@ -15,13 +17,27 @@ const SellerDashboard = () => {
             setUser(null);
         }
     }, [location]);
-    // Dummy stats (later from API)
-    const [stats, setStats] = useState({
-        totalProducts: 12,
-        totalOrders: 34,
-        totalRevenue: 45200,
-        pendingOrders: 5,
-    });
+    const [stats, setStats] = useState(null);
+    // fetch real seller stats
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const res = await axios.get(
+                    "http://localhost:5000/api/products/seller/stats",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setStats(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchStats();
+    }, []);
 
     // Dummy recent orders
     const [orders, setOrders] = useState([
@@ -44,7 +60,7 @@ const SellerDashboard = () => {
             status: "Shipped",
         },
         {
-            id: "ORD003",
+            id: "ORD004",
             customer: "Shivam",
             amount: 420,
             status: "Delivered",
@@ -60,22 +76,22 @@ const SellerDashboard = () => {
             </Header>
             <StatsGrid>
                 <StatCard>
-                    <StatNumber>{stats.totalProducts}</StatNumber>
+                    <StatNumber>{stats?.totalProducts || 0}</StatNumber>
                     <StatLabel>Total Products</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>{stats.totalOrders}</StatNumber>
+                    <StatNumber>{stats?.totalOrders || 0}</StatNumber>
                     <StatLabel>Total Orders</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>₹{stats.totalRevenue}</StatNumber>
+                    <StatNumber>₹{stats?.totalRevenue || 0}</StatNumber>
                     <StatLabel>Total Revenue</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>{stats.pendingOrders}</StatNumber>
+                    <StatNumber>{stats?.pendingOrders || 0}</StatNumber>
                     <StatLabel>Pending Orders</StatLabel>
                 </StatCard>
             </StatsGrid>

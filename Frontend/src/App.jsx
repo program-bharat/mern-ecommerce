@@ -20,33 +20,86 @@ import ViewProducts from "./pages/seller/ViewProducts"
 import BuyerEditProfile from "./pages/BuyerEditProfile";
 import SellerEditProfile from "./pages/seller/SellerEditProfile";
 
+// Protected Routes
+import ProtectedRoute from "./components/ProtectedRoute";
+// Redirect page according to the role
+import RoleRedirect from "./components/RoleRedirect";
+
 const App = () => {
   return (
     <BrowserRouter>
       <Container>
         <NavBar />
-
         <Main>
           <Routes>
-            {/* Buyer and seller edit-profile */}
-            <Route path="/edit-profile" element={<BuyerEditProfile />} />
-            <Route path="/seller/profile" element={<SellerEditProfile />} />
-
-            {/* Buyer Routes */}
-            <Route path="/" element={<Home />} />
+            {/* Public Routes */}
+            <Route
+              path="/"
+              element={
+                <RoleRedirect>
+                  <Home />
+                </RoleRedirect>
+              }
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/wishlist" element={<WishList />} />
             <Route path="/category/:category" element={<CategoryPage />} />
             <Route path="/product/:id" element={<ProductPage />} />
-
+            {/* Buyer Routes */}
+            <Route
+              path="/wishlist"
+              element={
+                <ProtectedRoute allowedRole="buyer">
+                  <WishList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/edit-profile"
+              element={
+                <ProtectedRoute allowedRole="buyer">
+                  <BuyerEditProfile />
+                </ProtectedRoute>
+              }
+            />
             {/* Seller Routes */}
-            <Route path="/seller/dashboard" element={<SellerDashboard />} />
-            <Route path="/seller/addproducts" element={<AddProduct />} />
-            <Route path="/seller/products" element={<ViewProducts />} />
+            <Route
+              path="/seller/dashboard"
+              element={
+                <ProtectedRoute allowedRole="seller">
+                  <SellerDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/seller/addproducts"
+              element={
+                <ProtectedRoute allowedRole="seller">
+                  <AddProduct />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/seller/products"
+              element={
+                <ProtectedRoute allowedRole="seller">
+                  <ViewProducts />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/seller/profile"
+              element={
+                <ProtectedRoute allowedRole="seller">
+                  <SellerEditProfile />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Main>
-
         <Footer />
       </Container>
     </BrowserRouter>

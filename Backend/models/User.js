@@ -21,6 +21,16 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["buyer", "seller"],
         default: "buyer"
+    },
+    // Optional for both
+    phone: {
+        type: String,
+        default: "",
+    },
+    // Only for seller
+    shopName: {
+        type: String,
+        default: "",
     }
 }, { timestamps: true });
 

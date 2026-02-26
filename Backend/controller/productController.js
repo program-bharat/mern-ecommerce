@@ -119,9 +119,3 @@ exports.getSellerStats = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
-
-// Get seller Profile data
-exports.getProfile = async (req, res) => {
-    const user = await User.findById(req.user._id).select("-password");
-    res.json(user);
-};

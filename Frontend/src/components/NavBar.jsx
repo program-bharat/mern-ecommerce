@@ -47,7 +47,12 @@ const NavBar = () => {
     // Edit Profile
     const handleEditProfile = () => {
         setIsProfileOpen(false);
-        navigate("/edit-profile");
+        // Role-based navigation
+        if (user.role === "seller") {
+            navigate("/seller/profile");
+        } else {
+            navigate("/edit-profile");
+        }
     };
     // Logout function
     const handleLogout = () => {

@@ -8,7 +8,6 @@ const {
     getProductById,
     getWishlistProducts,
     getSellerStats,
-    getProfile
 } = require("../controller/productController")
 
 // middlewares
@@ -45,9 +44,6 @@ router.get(
     sellerOnly,
     getSellerStats
 );
-
-// Seller Profile Page 
-router.get("/profile", protect, getProfile);
 
 // Category Page
 router.get("/category/:category", getProductsByCategory);

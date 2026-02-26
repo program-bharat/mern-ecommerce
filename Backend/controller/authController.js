@@ -70,3 +70,39 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ message: "Server Error" });
     }
 };
+
+// Get User Profile
+exports.getProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select("-password");
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ message: "Server Error" });
+    }
+}
+
+// Update User Profile
+exports.updateProfile = async (req, res) => {
+    try {
+        const { name, phone, shopName, password } = req.body;
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        if (name) user.name = name;
+        if (phone !== undefined) user.phone = phone;
+        // Only Seller can update
+        if (user.role === "seller" && shopName !== undefined) {
+            user.shopName = shopName;
+        }
+        if (password && password.length >= 6) {
+            user.password = await bcrypt.hash(password, 10);
+        }
+        await user.save();
+        res.status(200).json({
+            message: "Profile update successfully",
+        })
+    } catch (error) {
+        res.status(500).json({ message: "Server Error", })
+    }
+}

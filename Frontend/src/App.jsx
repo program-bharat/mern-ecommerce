@@ -16,6 +16,10 @@ import SellerDashboard from "./pages/seller/SellerDashboard";
 import AddProduct from "./pages/seller/AddProduct";
 import ViewProducts from "./pages/seller/ViewProducts"
 
+// Profile pages
+import BuyerEditProfile from "./pages/BuyerEditProfile";
+import SellerEditProfile from "./pages/seller/SellerEditProfile";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -24,6 +28,11 @@ const App = () => {
 
         <Main>
           <Routes>
+            {/* Buyer and seller edit-profile */}
+            <Route path="/edit-profile" element={<BuyerEditProfile />} />
+            <Route path="/seller/profile" element={<SellerEditProfile />} />
+
+            {/* Buyer Routes */}
             <Route path="/" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />

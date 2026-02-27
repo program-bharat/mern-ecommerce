@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import WishList from "./pages/WishList";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage"
+import Cart from "./pages/Cart";
 
 // Seller Pages
 import SellerDashboard from "./pages/seller/SellerDashboard";
@@ -51,6 +52,14 @@ const App = () => {
               element={
                 <ProtectedRoute allowedRole="buyer">
                   <WishList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute allowedRole="buyer">
+                  <Cart />
                 </ProtectedRoute>
               }
             />

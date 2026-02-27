@@ -8,6 +8,7 @@ const {
     getProductById,
     getWishlistProducts,
     getSellerStats,
+    getAllProducts
 } = require("../controller/productController")
 
 // middlewares
@@ -53,5 +54,8 @@ router.get("/wishlist", getWishlistProducts);
 
 // Product Page
 router.get("/:id", getProductById);
+
+// Get all products
+router.get("/", getAllProducts);
 
 module.exports = router;

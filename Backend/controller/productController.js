@@ -69,6 +69,17 @@ exports.getProductsByCategory = async (req, res) => {
     }
 }
 
+// Get all products (PUBLIC)
+exports.getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 });
+        res.status(200).json(products);
+    } catch (error) {
+        console.error("Get all products error:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+};
+
 // Get single product (for ProductPage)
 exports.getProductById = async (req, res) => {
     try {

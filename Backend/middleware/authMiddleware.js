@@ -37,3 +37,11 @@ exports.sellerOnly = (req, res, next) => {
     }
     next();
 }
+
+// Allow only Buyer
+exports.buyerOnly = (req, res, next) => {
+    if (req.user.role !== "buyer") {
+        return res.status(403).json({ message: "Buyer access only" });
+    }
+    next();
+}

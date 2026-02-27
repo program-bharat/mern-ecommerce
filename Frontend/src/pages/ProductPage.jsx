@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import { addToCart } from "../utils/cart";
 
 const ProductPage = () => {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [selectedSize, setSelectedSize] = useState("");
@@ -44,10 +46,12 @@ const ProductPage = () => {
             alert("Please select a size");
             return;
         }
-
-        console.log("Added to cart:", {
-            product: product.name,
-            size: selectedSize,
+        addToCart({
+            productId: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            size: selectedSize || null,
             quantity: quantity
         });
         alert("Added to cart successfully!");
@@ -59,13 +63,16 @@ const ProductPage = () => {
             alert("Please select a size");
             return;
         }
-
-        console.log("Buy now:", {
-            product: product.name,
-            size: selectedSize,
+        // add to cart first
+        addToCart({
+            productId: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            size: selectedSize || null,
             quantity: quantity
         });
-        alert("Proceeding to checkout!");
+        navigate("/cart");
     };
     const mockSizes = needsSize() ?
         (product?.category?.toLowerCase().includes("shoe") ?

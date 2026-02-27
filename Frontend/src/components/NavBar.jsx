@@ -1,9 +1,11 @@
 import styled from "styled-components"
 import { useState, useEffect, useRef } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { FiMenu, FiSearch, FiUser, FiHeart, FiX } from "react-icons/fi";
+import { FiMenu, FiSearch, FiUser, FiHeart, FiX, FiShoppingBag } from "react-icons/fi";
+import { getCartCount } from "../utils/cart";
 const NavBar = () => {
     const navigate = useNavigate();
+    const [cartCount, setCartCount] = useState(0);
     const [user, setUser] = useState(null);
     const [searchValue, setSearchValue] = useState("");
     const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +21,19 @@ const NavBar = () => {
     const toggleProfile = () => {
         setIsProfileOpen(!isProfileOpen);
     };
+
+    useEffect(() => {
+        // initial count
+        setCartCount(getCartCount());
+        const updateCart = () => {
+            setCartCount(getCartCount());
+        };
+        window.addEventListener("cartUpdated", updateCart);
+        return () => {
+            window.removeEventListener("cartUpdated", updateCart);
+        };
+    }, [location]);
+
     useEffect(() => {
         setIsProfileOpen(false);
     }, [location.pathname]);
@@ -120,6 +135,10 @@ const NavBar = () => {
                     <IconWrapper onClick={() => navigate("/wishlist")}>
                         <FiHeart size={22} />
                     </IconWrapper>
+                    <CartWrapper onClick={() => navigate("/cart")}>
+                        <FiShoppingBag size={22} />
+                        {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
+                    </CartWrapper>
                 </RightSection>
                 {/* SideBar */}
                 <SideBar $isOpen={isOpen}>
@@ -251,4 +270,23 @@ const DropdownItem = styled.div`
     &:hover {
         background: #f5f5f5;
     }
+`;
+
+const CartWrapper = styled.div`
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+`;
+
+const CartBadge = styled.span`
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: red;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: 600;
 `;

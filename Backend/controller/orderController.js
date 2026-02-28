@@ -12,10 +12,18 @@ exports.placeOrder = async (req, res) => {
         let totalAmount = 0;
         let sellerId = null;
         const formattedProducts = [];
+        // Loop through cart items
         for (let item of items) {
             const product = await Product.findById(item.productId);
-            if (!product) continue;
-            sellerId = product.createdBy || product.seller;
+            if (!product) {
+                return res.status(404).json({ message: "Product not found" });
+            };
+            if (sellerId && sellerId.toString() !== product.seller.toString()) {
+                return res.status(400).json({
+                    message: "All products must belong to same seller"
+                });
+            }
+            sellerId = product.seller;
             totalAmount += product.price * item.quantity;
             formattedProducts.push({
                 product: product._id,
@@ -62,7 +70,6 @@ exports.getSellerOrders = async (req, res) => {
 exports.getBuyerOrders = async (req, res) => {
     try {
         const buyerId = req.user._id;
-
         const orders = await Order.find({ buyer: buyerId })
             .populate("products.product", "name image price")
             .sort({ createdAt: -1 });
@@ -79,16 +86,19 @@ exports.getBuyerOrders = async (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
     try {
         const { status } = req.body;
-
+        const validStatus = ["pending", "approved", "rejected", "shipped"];
+        if (!validStatus.includes(status)) {
+            return res.status(400).json({ message: "Invalid status value" });
+        }
         const order = await Order.findById(req.params.id);
-
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
         }
-
+        if (order.seller.toString() !== req.user._id.toString()) {
+            return res.satus(403).json({ message: "Not authorized" });
+        }
         order.status = status;
         await order.save();
-
         res.json({
             success: true,
             message: "Order status updated",

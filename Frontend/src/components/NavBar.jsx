@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import { useState, useEffect, useRef } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import { FiMenu, FiSearch, FiUser, FiHeart, FiX, FiShoppingBag } from "react-icons/fi";
+import { FiMenu, FiSearch, FiUser, FiHeart, FiX, FiShoppingCart, FiTruck } from "react-icons/fi";
 import { getCartCount } from "../utils/cart";
 const NavBar = () => {
     const navigate = useNavigate();
@@ -132,13 +132,22 @@ const NavBar = () => {
                             </ProfileDropdown>
                         )}
                     </ProfileWrapper>
-                    <IconWrapper onClick={() => navigate("/wishlist")}>
-                        <FiHeart size={22} />
-                    </IconWrapper>
-                    <CartWrapper onClick={() => navigate("/cart")}>
-                        <FiShoppingBag size={22} />
-                        {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
-                    </CartWrapper>
+                    {user?.role === "buyer" && (
+                        <IconWrapper onClick={() => navigate("/wishlist")}>
+                            <FiHeart size={22} />
+                        </IconWrapper>
+                    )}
+                    {user?.role === "buyer" && (
+                        <IconWrapper onClick={() => navigate("/orders")}>
+                            <FiTruck size={22} />
+                        </IconWrapper>
+                    )}
+                    {user?.role === "buyer" && (
+                        <CartWrapper onClick={() => navigate("/cart")}>
+                            <FiShoppingCart size={22} />
+                            {cartCount > 0 && <CartBadge>{cartCount}</CartBadge>}
+                        </CartWrapper>
+                    )}
                 </RightSection>
                 {/* SideBar */}
                 <SideBar $isOpen={isOpen}>

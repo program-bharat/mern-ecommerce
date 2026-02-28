@@ -11,11 +11,13 @@ import WishList from "./pages/WishList";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage"
 import Cart from "./pages/Cart";
+import BuyerOrders from "./pages/BuyerOrders";
 
 // Seller Pages
 import SellerDashboard from "./pages/seller/SellerDashboard";
 import AddProduct from "./pages/seller/AddProduct";
 import ViewProducts from "./pages/seller/ViewProducts"
+import SellerOrders from "./pages/seller/SellerOrders";
 
 // Profile pages
 import BuyerEditProfile from "./pages/BuyerEditProfile";
@@ -71,6 +73,14 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute allowedRole="buyer">
+                  <BuyerOrders />
+                </ProtectedRoute>
+              }
+            />
             {/* Seller Routes */}
             <Route
               path="/seller/dashboard"
@@ -80,7 +90,6 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/seller/addproducts"
               element={
@@ -89,7 +98,6 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/seller/products"
               element={
@@ -98,12 +106,19 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-
             <Route
               path="/seller/profile"
               element={
                 <ProtectedRoute allowedRole="seller">
                   <SellerEditProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/seller/orders"
+              element={
+                <ProtectedRoute allowedRole="seller">
+                  <SellerOrders />
                 </ProtectedRoute>
               }
             />

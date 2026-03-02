@@ -46,8 +46,22 @@ const App = () => {
             />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/category/:category" element={<CategoryPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
+            <Route
+              path="/category/:category"
+              element={
+                <RoleRedirect>
+                  <CategoryPage />
+                </RoleRedirect>
+              }
+            />
+            <Route
+              path="/product/:id"
+              element={
+                <RoleRedirect>
+                  <ProductPage />
+                </RoleRedirect>
+              }
+            />
             {/* Buyer Routes */}
             <Route
               path="/wishlist"

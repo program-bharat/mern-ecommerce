@@ -75,8 +75,11 @@ const NavBar = () => {
         localStorage.removeItem("user");
         setUser(null);
         setIsProfileOpen(false);
+        navigate("/");
     };
-
+    useEffect(() => {
+        setIsOpen(false);
+    }, [location.pathname]);
     return (
         <>
             <Nav>
@@ -154,12 +157,54 @@ const NavBar = () => {
                     <CloseButton>
                         <FiX size={22} onClick={toggleMenu} style={{ cursor: "pointer" }} />
                     </CloseButton>
-                    <MenuItem>Shop All</MenuItem>
-                    <MenuItem>Best Sellers</MenuItem>
-                    <MenuItem>Shirts</MenuItem>
-                    <MenuItem>Polo T</MenuItem>
-                    <MenuItem>Baggy Jeans</MenuItem>
-                    <MenuItem>Wide Leg</MenuItem>
+                    {user?.role === "buyer" && (
+                        <>
+                            <MenuHeading>Shop</MenuHeading>
+                            <MenuItem onClick={() => navigate("/")}>Shop All</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/jackets")}>Jackets</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/trousers")}>Trousers</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/shirts")}>Shirts</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/jeans")}>Jeans</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/polos")}>Polos</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/cargos")}>Cargos</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/overshirts")}>Overshirts</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/shoes")}>Shoes</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/sunglasses")}>Sunglasses</MenuItem>
+                            <MenuItem onClick={() => navigate("/category/bags")}>Bags</MenuItem>
+                            <MenuDivider />
+                            <MenuHeading>Support</MenuHeading>
+                            <MenuItem onClick={() => navigate("/contact")}>Contact Us</MenuItem>
+                            <MenuItem onClick={() => navigate("/about")}>About Us</MenuItem>
+                        </>
+                    )}
+                    {user?.role === "seller" && (
+                        <>
+                            <MenuHeading>Seller Panel</MenuHeading>
+                            <MenuItem onClick={() => navigate("/seller/dashboard")}>
+                                Dashboard
+                            </MenuItem>
+                            <MenuItem onClick={() => navigate("/seller/addproducts")}>
+                                Add Product
+                            </MenuItem>
+                            <MenuItem onClick={() => navigate("/seller/products")}>
+                                My Products
+                            </MenuItem>
+                            <MenuItem onClick={() => navigate("/seller/orders")}>
+                                Orders
+                            </MenuItem>
+                            <MenuItem onClick={() => navigate("/seller/profile")}>
+                                Profile
+                            </MenuItem>
+                        </>
+                    )}
+                    {!user && (
+                        <>
+                            <MenuHeading>Explore</MenuHeading>
+                            <MenuItem onClick={() => navigate("/contact")}>Contact</MenuItem>
+                            <MenuItem onClick={() => navigate("/about")}>About</MenuItem>
+                            <MenuItem onClick={() => navigate("/login")}>Login</MenuItem>
+                        </>
+                    )}
                 </SideBar>
             </Nav >
         </>
@@ -298,4 +343,18 @@ const CartBadge = styled.span`
   padding: 2px 6px;
   border-radius: 50%;
   font-weight: 600;
+`;
+
+const MenuHeading = styled.div`
+    font-size: 14px;
+    font-weight: 600;
+    color: gray;
+    margin-top: 10px;
+    text-transform: uppercase;
+`;
+
+const MenuDivider = styled.div`
+    height: 1px;
+    background: #eee;
+    margin: 10px 0;
 `;

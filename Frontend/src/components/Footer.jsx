@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { FaInstagram, FaFacebookF, FaTwitter, FaYoutube, } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 const Footer = () => {
+    const navigate = useNavigate();
     return (
         <>
             <FooterWrapper>
@@ -19,7 +21,7 @@ const Footer = () => {
                     <LinkSection>
                         <Column>
                             <Heading>SHOP</Heading>
-                            <LinkItem>Shop All</LinkItem>
+                            <LinkItem onClick={() => { navigate("/") }}>Shop All</LinkItem>
                             <LinkItem>Best Sellers</LinkItem>
                             <LinkItem>New Arrivals</LinkItem>
                             <LinkItem>Jackets</LinkItem>
@@ -28,15 +30,15 @@ const Footer = () => {
                         </Column>
                         <Column>
                             <Heading>CUSTOMER CARE</Heading>
-                            <LinkItem>Contact Us</LinkItem>
+                            <LinkItem onClick={() => navigate("/contact")}>Contact Us</LinkItem>
                             <LinkItem>FAQs</LinkItem>
                             <LinkItem>Shipping Policy</LinkItem>
                             <LinkItem>Returns & Refunds</LinkItem>
-                            <LinkItem>Track Order</LinkItem>
+                            <LinkItem onClick={() => navigate("/orders")}>Track Order</LinkItem>
                         </Column>
                         <Column>
                             <Heading>COMPANY</Heading>
-                            <LinkItem>About Us</LinkItem>
+                            <LinkItem onClick={() => navigate("/about")}>About Us</LinkItem>
                             <LinkItem>Careers</LinkItem>
                             <LinkItem>Privacy Policy</LinkItem>
                             <LinkItem>Terms & Conditions</LinkItem>

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import AOS from "aos";
 import { useState, useEffect, useRef } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { FiMenu, FiSearch, FiUser, FiHeart, FiX, FiShoppingCart, FiTruck } from "react-icons/fi";
@@ -21,6 +22,14 @@ const NavBar = () => {
     const toggleProfile = () => {
         setIsProfileOpen(!isProfileOpen);
     };
+    // AOS animation
+    useEffect(() => {
+        AOS.init({
+            duration: 600,
+            once: true,
+            easing: "ease-in-out",
+        });
+    }, []);
 
     useEffect(() => {
         // initial count
@@ -83,9 +92,9 @@ const NavBar = () => {
     return (
         <>
             <Nav>
-                <LeftSection onClick={toggleMenu}><FiMenu size={22} /></LeftSection>
-                <Logo><Link to={"/"} style={{ textDecoration: "none", color: "black" }}>BHaRaT</Link ></Logo>
-                <RightSection>
+                <LeftSection data-aos="fade-down" onClick={toggleMenu}><FiMenu size={22} /></LeftSection>
+                <Logo data-aos="fade-down"><Link to={"/"} style={{ textDecoration: "none", color: "black" }}>BHaRaT</Link ></Logo>
+                <RightSection data-aos="fade-down">
                     <SearchContainer>
                         <FiSearch size={22} />
                         <SearchInput

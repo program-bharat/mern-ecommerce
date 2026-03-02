@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import styled from "styled-components";
 
 const SellerEditProfile = () => {
@@ -77,10 +78,17 @@ const SellerEditProfile = () => {
             setMessage(error.response?.data?.message || "Update failed");
         }
     };
-
+    // AOS init
+    useEffect(() => {
+        AOS.init({
+            duration: 450,
+            once: true,
+            easing: "ease-in-out",
+        });
+    }, []);
     return (
         <Wrapper>
-            <Card>
+            <Card data-aos="zoom-in-down">
                 <Title>Seller Profile</Title>
 
                 <Form onSubmit={handleSubmit}>

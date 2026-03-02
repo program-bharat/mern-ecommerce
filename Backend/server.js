@@ -8,6 +8,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 
 dotenv.config();
 connectDB();
@@ -24,6 +25,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 // serve uploaded images
 app.use("/uploads", express.static("uploads"));
+// Contact us routes
+app.use("/api/contact", contactRoutes);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`);

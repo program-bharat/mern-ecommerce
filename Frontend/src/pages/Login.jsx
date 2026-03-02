@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import styled from "styled-components"
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -59,10 +60,17 @@ const Login = () => {
             setMessage(error.response?.data?.message || "Login Failed");
         }
     }
+    useEffect(() => {
+        AOS.init({
+            duration: 500,
+            easing: "ease-out-cubic",
+            once: true,
+        });
+    }, []);
     return (
         <>
             <Wrapper>
-                <FormCard>
+                <FormCard data-aos="zoom-in-down">
                     <Title>Login</Title>
 
                     <Form onSubmit={handleSubmit}>

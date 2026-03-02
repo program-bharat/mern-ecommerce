@@ -12,6 +12,8 @@ import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage"
 import Cart from "./pages/Cart";
 import BuyerOrders from "./pages/BuyerOrders";
+import ContactUs from "./pages/ContactUs";
+import AboutUs from "./pages/AboutUs";
 
 // Seller Pages
 import SellerDashboard from "./pages/seller/SellerDashboard";
@@ -136,6 +138,8 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/about" element={<AboutUs />} />
           </Routes>
         </Main>
         <Footer />

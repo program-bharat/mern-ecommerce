@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import AOS from "aos";
 import styled from "styled-components";
 
 const BuyerEditProfile = () => {
@@ -14,7 +15,7 @@ const BuyerEditProfile = () => {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
 
-    // 🔥 Fetch profile
+    // Fetch profile
     useEffect(() => {
         const fetchProfile = async () => {
             try {
@@ -50,7 +51,7 @@ const BuyerEditProfile = () => {
         });
     };
 
-    // 🔥 update profile
+    // update profile
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -77,10 +78,18 @@ const BuyerEditProfile = () => {
             setMessage(error.response?.data?.message || "Update failed");
         }
     };
+    // AOS init
+    useEffect(() => {
+        AOS.init({
+            duration: 450,
+            once: true,
+            easing: "ease-in-out",
+        });
+    }, []);
 
     return (
         <Wrapper>
-            <Card>
+            <Card data-aos="zoom-in-down">
                 <Title>Edit Profile</Title>
 
                 <Form onSubmit={handleSubmit}>

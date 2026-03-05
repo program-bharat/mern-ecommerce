@@ -1,4 +1,5 @@
 import Category from "../components/Category";
+import ShowAllProducts from "../components/ShowAllProducts";
 import Slider from "../components/Slider"
 const images = [
     "/Slides/slide1.webp",
@@ -11,6 +12,7 @@ const Home = () => {
         <>
             <Slider images={images} />
             <Category />
+            <ShowAllProducts />
         </>
     )
 }

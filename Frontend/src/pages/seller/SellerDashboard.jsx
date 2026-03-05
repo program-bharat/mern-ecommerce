@@ -33,40 +33,33 @@ const SellerDashboard = () => {
                 );
                 setStats(res.data);
             } catch (err) {
-                console.error(err);
+                console.error("Stats error:", err);
             }
         };
         fetchStats();
     }, []);
 
-    // Dummy recent orders
-    const [orders, setOrders] = useState([
-        {
-            id: "ORD001",
-            customer: "Rahul",
-            amount: 1200,
-            status: "Pending",
-        },
-        {
-            id: "ORD002",
-            customer: "Priya",
-            amount: 850,
-            status: "Delivered",
-        },
-        {
-            id: "ORD003",
-            customer: "Shubham",
-            amount: 2400,
-            status: "Shipped",
-        },
-        {
-            id: "ORD004",
-            customer: "Shivam",
-            amount: 420,
-            status: "Delivered",
-        },
+    const [orders, setOrders] = useState([]);
+    useEffect(() => {
+        const fetchSellerOrders = async () => {
+            try {
+                const token = localStorage.getItem("token");
+                const res = await axios.get(
+                    "http://localhost:5000/api/orders/seller",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setOrders(res.data.orders.slice(0, 5));
+            } catch (error) {
+                console.error("Fetch seller orders error:", error);
+            }
+        };
 
-    ]);
+        fetchSellerOrders();
+    }, []);
 
     return (
         <Wrapper>
@@ -76,22 +69,30 @@ const SellerDashboard = () => {
             </Header>
             <StatsGrid>
                 <StatCard>
-                    <StatNumber>{stats?.totalProducts || 0}</StatNumber>
+                    <StatNumber>
+                        {stats ? stats.totalProducts : "..."}
+                    </StatNumber>
                     <StatLabel>Total Products</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>{stats?.totalOrders || 0}</StatNumber>
+                    <StatNumber>
+                        {stats ? stats.totalOrders : "..."}
+                    </StatNumber>
                     <StatLabel>Total Orders</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>₹{stats?.totalRevenue || 0}</StatNumber>
+                    <StatNumber>
+                        {stats ? `₹${Number(stats.totalRevenue).toLocaleString()}` : "..."}
+                    </StatNumber>
                     <StatLabel>Total Revenue</StatLabel>
                 </StatCard>
 
                 <StatCard>
-                    <StatNumber>{stats?.pendingOrders || 0}</StatNumber>
+                    <StatNumber>
+                        {stats ? stats.pendingOrders : "..."}
+                    </StatNumber>
                     <StatLabel>Pending Orders</StatLabel>
                 </StatCard>
             </StatsGrid>
@@ -143,14 +144,24 @@ const SellerDashboard = () => {
                         </thead>
 
                         <tbody>
-                            {orders.map((order) => (
-                                <tr key={order.id}>
-                                    <td>{order.id}</td>
-                                    <td>{order.customer}</td>
-                                    <td>₹{order.amount}</td>
-                                    <Status $status={order.status}>{order.status}</Status>
+                            {orders.length === 0 ? (
+                                <tr>
+                                    <td colSpan="4" style={{ textAlign: "center" }}>
+                                        No recent orders
+                                    </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                orders.map((order) => (
+                                    <tr key={order._id}>
+                                        <td>{order._id.slice(-6).toUpperCase()}</td>
+                                        <td>{order.buyer?.name}</td>
+                                        <td>₹{order.totalAmount}</td>
+                                        <Status $status={order.status}>
+                                            {order.status}
+                                        </Status>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </Table>
                 </TableWrapper>

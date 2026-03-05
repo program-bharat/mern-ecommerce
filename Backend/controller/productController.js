@@ -1,4 +1,5 @@
 const Product = require("../models/Products");
+const Order = require("../models/Order");
 
 // Seller Add Products
 exports.addProducts = async (req, res, next) => {
@@ -113,18 +114,38 @@ exports.getWishlistProducts = async (req, res) => {
 // Get Seller Dashboard Stats
 exports.getSellerStats = async (req, res) => {
     try {
-        // total products of this seller
+        const sellerId = req.user._id;
         const totalProducts = await Product.countDocuments({
-            seller: req.user._id
+            seller: sellerId,
         });
-        // orders not implemented yet keeping 0 for now
-        const stats = {
+        const totalOrders = await Order.countDocuments({
+            seller: sellerId,
+        });
+        const pendingOrders = await Order.countDocuments({
+            seller: sellerId,
+            status: { $regex: /^pending$/i }, // case insensitive
+        });
+        const revenueAgg = await Order.aggregate([
+            {
+                $match: {
+                    seller: sellerId,
+                    status: { $nin: ["Cancelled", "cancelled"] }, // exclude cancelled
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$totalAmount" },
+                },
+            },
+        ]);
+        const totalRevenue = revenueAgg.length > 0 ? revenueAgg[0].total : 0;
+        res.status(200).json({
             totalProducts,
-            totalOrders: 0,
-            totalRevenue: 0,
-            pendingOrders: 0,
-        };
-        res.status(200).json(stats);
+            totalOrders,
+            pendingOrders,
+            totalRevenue,
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Server Error" });

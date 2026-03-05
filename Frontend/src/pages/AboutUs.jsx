@@ -17,7 +17,7 @@ const AboutUs = () => {
                 <Title data-aos="zoom-out">About Us</Title>
 
                 <Text data-aos="zoom-in" data-aos-delay="100">
-                    Welcome to BHaRaT. We are committed to delivering high-quality
+                    Welcome to Stylix. We are committed to delivering high-quality
                     fashion products with a seamless shopping experience for both
                     buyers and sellers.
                 </Text>

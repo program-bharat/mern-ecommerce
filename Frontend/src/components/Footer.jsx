@@ -8,7 +8,7 @@ const Footer = () => {
             <FooterWrapper>
                 <TopSection>
                     <BrandSection>
-                        <Logo>BHaRaT</Logo>
+                        <Logo>Stylix</Logo>
                         <Description>Elevate your everyday style with premium quality fashion.
                             Designed for comfort. Built for confidence.</Description>
                         <SocialIcons>
@@ -46,7 +46,7 @@ const Footer = () => {
                     </LinkSection>
                 </TopSection>
                 <BottomSection>
-                    © {new Date().getFullYear()} BHaRaT. All Rights Reserved.
+                    © {new Date().getFullYear()} Stylix. All Rights Reserved.
                 </BottomSection>
             </FooterWrapper >
         </>

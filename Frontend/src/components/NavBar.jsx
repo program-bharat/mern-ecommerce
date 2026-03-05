@@ -93,7 +93,7 @@ const NavBar = () => {
         <>
             <Nav>
                 <LeftSection data-aos="fade-down" onClick={toggleMenu}><FiMenu size={22} /></LeftSection>
-                <Logo data-aos="fade-down"><Link to={"/"} style={{ textDecoration: "none", color: "black" }}>BHaRaT</Link ></Logo>
+                <Logo data-aos="fade-down"><Link to={"/"} style={{ textDecoration: "none", color: "black" }}>Stylix</Link ></Logo>
                 <RightSection data-aos="fade-down">
                     <SearchContainer>
                         <FiSearch size={22} />

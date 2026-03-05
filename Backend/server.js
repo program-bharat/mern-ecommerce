@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
 // Local Module
 const connectDB = require('./config/db');
@@ -12,6 +14,12 @@ const contactRoutes = require("./routes/contactRoutes");
 
 dotenv.config();
 connectDB();
+
+// ensure uploads folder exists
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Middleware
 app.use(cors());

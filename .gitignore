@@ -4,6 +4,8 @@ node_modules/
 # Environment variables (secrets)
 .env
 .env.*
+# allow example env file
+!.env.example
 
 # Build folders
 dist/
